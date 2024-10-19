@@ -8,3 +8,7 @@ Convert an english epub to an "audiobook", basically it is read in a non robotic
 3. `conda create --name ebook_to_audiobook --file requirements.txt`
 4. `conda activate ebook_to_audiobook`
 5. `python main.py -h`
+
+
+### Example usage
+`python main.py -i "myfavbook.epub" -o "/home/user/myfavdirectory"`
