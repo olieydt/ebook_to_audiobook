@@ -1,6 +1,7 @@
 import argparse
 import os
 import logging
+import re
 
 from epub_extractor import convert_to_nice_path, get_parsed_book
 from text_to_speech import TextToAudio, string_to_model_type

@@ -74,6 +74,11 @@ def clean_text(text):
     # Normalize line endings to '\n'
     text = text.replace("\r\n", "\n").replace("\r", "\n")
 
+    def all_caps_replacer(match):
+        return f"\n{match.group(1).capitalize()}\n"
+
+    text = re.sub(r"\n([A-Z'\. :]+)\n", all_caps_replacer, text)
+
     def replacer(match):
         matched_text = match.group()
         if len(matched_text) >= 2:
