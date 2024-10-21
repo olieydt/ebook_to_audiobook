@@ -11,4 +11,4 @@ Convert an english epub to an "audiobook", basically it is read in a non robotic
 
 
 ### Example usage
-`python main.py -i "myfavbook.epub" -o "/home/user/myfavdirectory"`
+`python main.py -i "myfavbook.epub" -o "/home/user/myfavdirectory" -m WHISPER`

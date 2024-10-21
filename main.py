@@ -19,7 +19,7 @@ def parse_arguments():
         help="Path to the output directory where the audio files will be saved.",
     )
     parser.add_argument(
-        "-t",
+        "-m",
         "--model",
         type=str,
         required=True,
