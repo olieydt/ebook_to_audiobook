@@ -29,13 +29,10 @@ def parse_arguments():
 
 
 def main():
-    """args = parse_arguments()
+    args = parse_arguments()
     input_epub = args.input
     output_dir = args.output
-    model_type = args.model"""
-    input_epub = "/Users/hotdog/Downloads/peter_walker.epub"
-    output_dir = "/Users/hotdog/Downloads"
-    model_type = "WHISPER"
+    model_type = args.model
     if not os.path.isfile(input_epub):
         raise Exception(f"Warning: epub {input_epub} not found")
 
