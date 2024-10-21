@@ -32,7 +32,7 @@ def main():
     args = parse_arguments()
     input_epub = args.input
     output_dir = args.output
-    model_type = args.mode
+    model_type = args.model
     if not os.path.isfile(input_epub):
         raise Exception(f"Warning: epub {input_epub} not found")
 
