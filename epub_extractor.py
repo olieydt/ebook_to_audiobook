@@ -3,6 +3,7 @@ from ebooklib import epub
 from bs4 import BeautifulSoup
 import re
 from typing import List, Dict
+from urllib.parse import urlparse
 
 
 def convert_to_nice_path(s: str) -> str:
@@ -26,33 +27,29 @@ def get_toc(book: epub.EpubBook):
         if isinstance(item, epub.Link):
             # Simple chapter
             chapters.append({"title": item.title, "href": item.href})
-        elif isinstance(item, epub.Section):
+        elif isinstance(item, tuple) and isinstance(item[0], epub.Section):
             # Section with possible subsections
-            chapters.extend(extract_section(item))
+            chapters.append({"title": item[0].title, "href": item[0].href})
+            chapters.extend(extract_section(item[1]))
     return chapters
 
 
-def extract_section(section, parent_title=""):
+def extract_section(sections):
     chapters = []
-    current_title = (
-        f"{parent_title} > {section.title}" if parent_title else section.title
-    )
-    chapters.append({"title": current_title, "href": section.href})
 
-    for sub_item in section.subsections:
+    for sub_item in sections:
         if isinstance(sub_item, epub.Link):
-            chapters.append(
-                {"title": f"{current_title} > {sub_item.title}", "href": sub_item.href}
-            )
-        elif isinstance(sub_item, epub.Section):
-            chapters.extend(extract_section(sub_item, current_title))
+            chapters.append({"title": sub_item.title, "href": sub_item.href})
+        elif isinstance(sub_item, tuple) and isinstance(sub_item[0], epub.Section):
+            chapters.append({"title": sub_item[0].title, "href": sub_item[0].href})
+            chapters.extend(extract_section(sub_item[1]))
     return chapters
 
 
-def extract_chapter_content(book: epub.EpubBook, href):
+def extract_chapter_content(book: epub.EpubBook, href: str):
     try:
         # Get the document by href
-        doc = book.get_item_with_href(href)
+        doc = book.get_item_with_href(urlparse(href).path)
         if doc is None:
             print(f"Document not found: {href}")
             return ""
