@@ -3,7 +3,7 @@ import os
 import logging
 
 from epub_extractor import convert_to_nice_path, get_parsed_book
-from text_to_speech import MODELS, TextToAudio
+from text_to_speech import TextToAudio, string_to_model_type
 
 
 def parse_arguments():
@@ -29,20 +29,21 @@ def parse_arguments():
 
 
 def main():
-    args = parse_arguments()
+    """args = parse_arguments()
     input_epub = args.input
     output_dir = args.output
-    model_type = args.model
+    model_type = args.model"""
+    input_epub = "/Users/hotdog/Downloads/peter_walker.epub"
+    output_dir = "/Users/hotdog/Downloads"
+    model_type = "WHISPER"
     if not os.path.isfile(input_epub):
         raise Exception(f"Warning: epub {input_epub} not found")
-    if model_type not in MODELS:
-        raise Exception(f"Warning: model {model_type} not found")
 
     book_title, parsed_book = get_parsed_book(input_epub)
     book_title_folder = convert_to_nice_path(book_title)
     output_path = os.path.join(output_dir, book_title_folder)
     os.makedirs(output_path, exist_ok=True)
-    text_to_speech = TextToAudio(MODELS[model_type])
+    text_to_speech = TextToAudio(string_to_model_type(model_type))
     for i in range(len(parsed_book)):
         p = parsed_book[i]
         chapter = p["chapter"]

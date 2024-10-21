@@ -7,19 +7,23 @@ from pathlib import Path
 from enum import Enum
 
 
-class Type(Enum):
-    COQUI: 1
-    WHISPER: 2
+class ModelTypes(Enum):
+    COQUI = "COQUI"
+    WHISPER = "WHISPER"
 
 
-MODELS = {"COQUI": Type.COQUI, "WHIPSER": Type.WHISPER}
+def string_to_model_type(enum_str: str):
+    try:
+        return ModelTypes(enum_str)
+    except ValueError:
+        raise ValueError(f"'{enum_str}' is not a valid Type")
 
 
 class TextToAudio:
-    def __init__(self, type: Type):
+    def __init__(self, type: ModelTypes):
         self.type = type
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        if type == Type.COQUI:
+        if type == ModelTypes.COQUI:
             from TTS.api import TTS
 
             self.tts = TTS(
@@ -33,9 +37,9 @@ class TextToAudio:
             )
 
     def inner_convert(self, text: str, file_path: str):
-        if self.type == Type.COQUI:
+        if self.type == ModelTypes.COQUI:
             return self.tts.tts_to_file(text=text, file_path=file_path)
-        elif self.type == Type.WHISPER:
+        elif self.type == ModelTypes.WHISPER:
             return self.tts.generate_to_file(file_path, text)
         raise Exception("not implemented")
 
